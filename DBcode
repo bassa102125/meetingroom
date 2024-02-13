@@ -1,0 +1,62 @@
+CREATE DATABASE ideastock;
+use ideastock;
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    loginId VARCHAR(10) NOT NULL,
+    password VARCHAR(10) NOT NULL,
+    name VARCHAR(10) NOT NULL,
+    CONSTRAINT chk_loginId_length CHECK (LENGTH(loginId) >= 8),
+    CONSTRAINT chk_password_length CHECK (LENGTH(password) >= 6),
+    CONSTRAINT chk_loginId_password_unique UNIQUE (loginId, password)
+);
+
+CREATE TABLE question (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    question VARCHAR(256) NOT NULL,
+    date DATETIME NOT NULL,
+    deleteFlag TINYINT(1) NOT NULL DEFAULT 0,
+    FOREIGN KEY (userId) REFERENCES user(id)
+);
+
+CREATE TABLE answer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    questionId INT NOT NULL,
+    userId INT NOT NULL,
+    answer VARCHAR(256) NOT NULL,
+    date DATETIME NOT NULL,
+    deleteFlag TINYINT(1) NOT NULL DEFAULT 0,
+    FOREIGN KEY (questionId) REFERENCES question(id),
+    FOREIGN KEY (userId) REFERENCES user(id)
+);
+
+
+-- 以下は会議室管理システムでのDB仕様--
+
+CREATE DATABASE meetingroom;
+use meetingroom;
+CREATE TABLE user (
+    id VARCHAR(7) PRIMARY KEY,
+    password VARCHAR(10) NOT NULL,
+    name VARCHAR(10),
+    address VARCHAR(30),
+    CONSTRAINT chk_password_length CHECK (LENGTH(password) >= 6),
+    CONSTRAINT chk_password_name_unique UNIQUE (password,name)
+);
+
+CREATE TABLE room (
+    id char(4) PRIMARY KEY,
+    name VARCHAR(20)
+);
+
+CREATE TABLE reservation (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    roomId VARCHAR(4) NOT NULL,
+    date DATE NOT NULL,
+    start TIME NOT NULL,
+    end TIME NOT NULL,
+    userId VARCHAR(7) NOT NULL,
+    FOREIGN KEY (roomId) REFERENCES room(id),
+    FOREIGN KEY (userId) REFERENCES user(id),
+    CONSTRAINT chk_roomId_date_start_unique UNIQUE (roomId,date,start)
+);
