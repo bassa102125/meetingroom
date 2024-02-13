@@ -9,7 +9,7 @@
 会議室の予約を管理するシステムとして開発しました。
 
 #2.使用技術
-+Eclipse: 4.7 Oxygen
++　Eclipse: 4.7 Oxygen
 +Java SE: 8
 +JDK: 8
 +MySQL 8.0.13
